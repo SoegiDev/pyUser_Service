@@ -14,16 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-      - name: "Get latest tag"
-        id: latest_tag
-        run: echo "::set-output name=name::$(git tag --sort=-creatordate | head -1)"
-      - name: "Get second latest tag"
-        id: second_latest_tag
-        run: echo "::set-output name=name::$(git tag --sort=-creatordate | head -2 | tail -1)"
-      - name: "Get changelog"
-        id: changelog
-        run: echo "::set-output name=changelog::$(echo $(git log --pretty=format:'- %s\n' ${{ steps.second_latest_tag.outputs.name }}..${{ steps.latest_tag.outputs.name }}))"
+          ref: ${{ github.ref }}
+      - name: Get Release Notes
+        run: 'echo "$(git tag -l --format="%(contents:body)" $GITHUB_REF_NAME)" > RELEASE_NOTES'
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
