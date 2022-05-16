@@ -1,26 +1,22 @@
-from ast import arg
-import re
-from database import db
 import sys
 sys.path.append('./')
 from validation import *
 from model.User import User
 from helper import *
-from app import connection
-# def connect_db():
-#     d = dict()
-#     init_db = db(app)
-#     status = None
-#     closed = None
-#     messages = None
-#     cursor = None
-#     conn = None
-#     status , closed , messages = init_db.ConnectionToDB()
-#     if(status == 1) and (closed == 0):
-#         conn,cursor,closed,status,messages = init_db.connect()
-#         return conn,cursor,closed,status,messages,d
-#     else:
-#         return conn,cursor,closed,status,messages,d
+from app import *
+def connection():
+    d = dict()
+    status = None
+    closed = None
+    messages = None
+    cursor = None
+    conn = None
+    status , closed , messages = init_db.ConnectionToDB()
+    if(status == 1) and (closed == 0):
+        conn,cursor,closed,status,messages = init_db.connect()
+        return conn,cursor,closed,status,messages,d
+    else:
+        return conn,cursor,closed,status,messages,d
     
     
 def list(*args,**kwargs):

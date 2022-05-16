@@ -3,7 +3,11 @@ import os
 from flask import Flask,json,jsonify,request
 from database import db
 from service import typeService,service
+from database import create_first
 app = Flask(__name__)
+init_db = db(app)
+init_service = service(app)
+
 HOST = "0.0.0.0"
 PORT = 5002
 if os.environ.get('FLASK_ENV') == 'dev':
@@ -15,21 +19,6 @@ elif os.environ.get('FLASK_ENV') == 'testing':
 else:
     # app.logger.info(os.environ.get('FLASK_ENV'))
     app.config.from_object('config.Production')
-init_db = db(app)
-init_service = service(app)
-def connection():
-    # """A dummy docstring."""
-    resp = {}
-    status = None
-    closed = None
-    messages = None
-    cursor = None
-    conn = None
-    status , closed , messages = init_db.ConnectionToDB()
-    if(status == 1) and (closed == 0):
-        conn,cursor,closed,status,messages = init_db.connect()
-    return conn,cursor,closed,status,messages,resp
-from database import create_first
 @app.route("/login",methods=["POST"])
 def user_login():
     """A dummy docstring."""
@@ -124,7 +113,7 @@ def create_user():
     status = False
     message = "Table user sudah ada"
     if init :
-        run = create_first.CreateDatabase()
+        run = create_first.CreateDatabase(app)
         run.createUser()
         run.createMigrations()
         run.createConfiguration()

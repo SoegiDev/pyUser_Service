@@ -3,7 +3,6 @@ sys.path.append('./')
 import json
 import pytest
 import app
-
 @pytest.fixture
 def client(request):
     test_client = app.app.test_client()

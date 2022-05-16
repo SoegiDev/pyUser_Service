@@ -3,7 +3,6 @@ sys.path.append('./')
 from model.BasicConfig import BasicConfig
 from helper import *
 import json
-from app import connection
 class CreateDatabase():
     status = ''
     closed = ''
@@ -11,7 +10,11 @@ class CreateDatabase():
     conn = ''
     cursor = ''
     d = dict()
-    conn,cursor,closed,status,messages,d = connection()
+    
+    def __init__(self,app):
+        status , closed , messages = app.init_db.ConnectionToDB()
+        if(status == 1) and (closed == 0):
+            conn,cursor,closed,status,messages = app.init_db.connect()
     def createUser(self):
         self.cursor.execute('DROP TABLE IF EXISTS verification')
         self.conn.commit
