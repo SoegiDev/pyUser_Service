@@ -1,30 +1,25 @@
 """System module."""
-import sys
 import os
 from flask import Flask,json,jsonify,request
-from database import db,create_first
+from database import db
 from service import typeService,service
-#pylint: disable=wrong-import-position
-import socket
 app = Flask(__name__)
 HOST = "0.0.0.0"
 PORT = 5002
 if os.environ.get('FLASK_ENV') == 'dev':
-    app.logger.info(os.environ.get('FLASK_ENV'))
+    # app.logger.info(os.environ.get('FLASK_ENV'))
     app.config.from_object('config.Development')
-
 elif os.environ.get('FLASK_ENV') == 'testing':
-    app.logger.info(os.environ.get('FLASK_ENV'))
+    # app.logger.info(os.environ.get('FLASK_ENV'))
     app.config.from_object('config.Testing')
-
 else:
-    app.logger.info(os.environ.get('FLASK_ENV'))
+    # app.logger.info(os.environ.get('FLASK_ENV'))
     app.config.from_object('config.Production')
 init_db = db(app)
-init_service = service(app) 
+init_service = service(app)
 def connection():
     # """A dummy docstring."""
-    d = dict()
+    resp = {}
     status = None
     closed = None
     messages = None
@@ -33,7 +28,8 @@ def connection():
     status , closed , messages = init_db.ConnectionToDB()
     if(status == 1) and (closed == 0):
         conn,cursor,closed,status,messages = init_db.connect()
-    return conn,cursor,closed,status,messages,d
+    return conn,cursor,closed,status,messages,resp
+from database import create_first
 @app.route("/login",methods=["POST"])
 def user_login():
     """A dummy docstring."""
@@ -56,21 +52,6 @@ def user_login():
         "error":val['error'],
         "message":val['message']
         }), 500
-
-@app.route("/connect",methods=["GET"])
-def user_connect():
-    """A dummy docstring."""
-    status = None
-    closed = None
-    messages = None
-    cursor = None
-    conn = None
-    conn,cursor,closed,status,message,d = connection()
-    print("message", f"{closed}{messages}{cursor}{conn}")
-    return jsonify({
-        "status" : status,
-        "message":f"{message}"
-    }),200
 @app.route("/hello",methods=['GET'])
 def hello():
     """A dummy docstring."""
@@ -138,10 +119,11 @@ def user_register():
         }), 500
 @app.route("/create",methods=["GET"])
 def create_user():
-    FIRST=  app.config.get('INIT_FIRST')
+    """A dummy docstring."""
+    init=  app.config.get('INIT_FIRST')
     status = False
     message = "Table user sudah ada"
-    if FIRST :
+    if init :
         run = create_first.CreateDatabase()
         run.createUser()
         run.createMigrations()

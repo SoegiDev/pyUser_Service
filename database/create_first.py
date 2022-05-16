@@ -1,7 +1,6 @@
 import sys
 sys.path.append('./')
 from model.BasicConfig import BasicConfig
-from database import db
 from helper import *
 import json
 from app import connection
