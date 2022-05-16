@@ -1,0 +1,5 @@
+*__pycache__
+userEnv
+.gitignore
+tests
+test_

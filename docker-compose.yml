@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:13
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    ports:
+        - 5436:5432
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_DB=dev_database
+    networks: 
+      - microservice1
+  user:
+    container_name: pyuser_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./user:/app
+    ports:
+      - 5002:5002
+    environment:
+      - FLASK_DEBUG=1
+      - FLASK_ENV=dev
+    depends_on:
+      - postgres
+    networks:
+      - microservice1
+networks:
+  microservice1:
+    name: microservice1
+volumes:
+  pgdata:
+    name: pgdata

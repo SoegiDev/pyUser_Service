@@ -1,0 +1,9 @@
+__pycache__/
+database/__pycache__*
+helper/__pycache__*
+model/__pycache__*
+service/__pycache__*
+userEnv*
+validation/__pycache__*
+test_*
+.env
