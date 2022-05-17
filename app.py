@@ -1,24 +1,25 @@
 """System module."""
 import os
 from flask import Flask,json,jsonify,request
-from database import db
+from database import db,create_first
 from service import typeService,service
-from database import create_first
 app = Flask(__name__)
-init_db = db(app)
-init_service = service(app)
-
-HOST = "0.0.0.0"
-PORT = 5002
 if os.environ.get('FLASK_ENV') == 'dev':
     # app.logger.info(os.environ.get('FLASK_ENV'))
     app.config.from_object('config.Development')
+    init_db = db(app)
 elif os.environ.get('FLASK_ENV') == 'testing':
     # app.logger.info(os.environ.get('FLASK_ENV'))
     app.config.from_object('config.Testing')
+    init_db = db(app)
 else:
     # app.logger.info(os.environ.get('FLASK_ENV'))
     app.config.from_object('config.Production')
+    init_db = db(app)
+init_service = service(app)
+HOST = "0.0.0.0"
+PORT = 5002
+
 @app.route("/login",methods=["POST"])
 def user_login():
     """A dummy docstring."""
@@ -119,7 +120,7 @@ def create_user():
         run.createConfiguration()
         run.getDataConfig()
         run.cursorClose()
-        run.connClose
+        run.connClose()
         status = True
         message= "Berhasil Create"
         app.config['INIT_FIRST'] = False

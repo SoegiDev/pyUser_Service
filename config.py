@@ -6,7 +6,7 @@ class Config(object):
     USER = None
     DB = None
     PWD = None
-    PORT = 5432
+    PORT = None
     
 class Development(Config):
     DEBUG = True
