@@ -4,7 +4,7 @@ from flask import Flask,json,jsonify,request
 from database import db,create_first
 from service import typeService,service
 app = Flask(__name__)
-if os.environ.get('FLASK_ENV') == 'dev':
+if os.environ.get('FLASK_ENV') == 'development':
     # app.logger.info(os.environ.get('FLASK_ENV'))
     app.config.from_object('config.Development')
     init_db = db(app)
@@ -114,13 +114,13 @@ def create_user():
     status = False
     message = "Table user sudah ada"
     if init :
-        run = create_first.CreateDatabase(app)
-        run.createUser()
-        run.createMigrations()
-        run.createConfiguration()
-        run.getDataConfig()
-        run.cursorClose()
-        run.connClose()
+        initial = create_first.CreateDatabase()
+        initial.createUser()
+        initial.createMigrations()
+        initial.createConfiguration()
+        initial.getDataConfig()
+        initial.cursorClose()
+        initial.connClose()
         status = True
         message= "Berhasil Create"
         app.config['INIT_FIRST'] = False

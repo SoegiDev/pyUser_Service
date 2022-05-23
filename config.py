@@ -12,7 +12,7 @@ class Development(Config):
     DEBUG = True
     ENV_VALUE = "Development"
     INIT_FIRST = True
-    HOST = "postgres"
+    HOST = "localhost"
     USER = "postgres"
     DB = "dev_database"
     PWD = "password"

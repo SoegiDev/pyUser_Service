@@ -5,5 +5,5 @@ model/__pycache__*
 service/__pycache__*
 userEnv*
 validation/__pycache__*
-test_*
+test*
 .env
