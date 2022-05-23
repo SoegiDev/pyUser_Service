@@ -3,6 +3,7 @@ import os
 from flask import Flask,json,jsonify,request
 from database import db,create_first
 from service import typeService,service
+from helper import response
 app = Flask(__name__)
 if os.environ.get('FLASK_ENV') == 'development':
     # app.logger.info(os.environ.get('FLASK_ENV'))
@@ -29,19 +30,10 @@ def user_login():
     init_service.set(typeService.data_user.value,typeService.data_userlogin.value)
     val = init_service.getService(column,param)
     if val['status'] is True and val['error'] is False :
-        return jsonify({
-                "error":val['error'],
-                "data":val['data']
-            }), 200
+        return response.itsOk(val)
     if val['status'] is False and val['error'] is False :
-        return jsonify({
-                "error":val['error'],
-                "message":val['message']
-            }), 400
-    return jsonify({
-        "error":val['error'],
-        "message":val['message']
-        }), 500
+        return response.badRequest(val)
+    return response.unProcess(val)
 @app.route("/hello",methods=['GET'])
 def hello():
     """A dummy docstring."""
@@ -56,13 +48,10 @@ def user_list():
     init_service.set(typeService.data_user.value,typeService.data_userlist.value)
     val = init_service.getService(column,param)
     if val['status'] is True and val['error'] is False :
-        return jsonify({
-                "error":val['error'],
-                "data":val['data']
-            }), 200
+        return response.itsOk(val)
     if val['status'] is False and val['error'] is False :
-        return jsonify({"error":val['error'],"message":val['message']}),400
-    return jsonify({"error":val['error'],"message":val['message']}),500
+        return response.badRequest(val)
+    return response.unProcess(val)
 @app.route("/single",methods=["GET"])
 def user_single():
     """A dummy docstring."""
@@ -72,19 +61,10 @@ def user_single():
     init_service.set(typeService.data_user.value,typeService.data_usersingle.value)
     val = init_service.getService(column,param)
     if val['status'] is True and val['error'] is False :
-        return jsonify({
-                "error":val['error'],
-                "data":val['data']
-            }), 200
+        return response.itsOk(val)
     if val['status'] is False and val['error'] is False :
-        return jsonify({
-                "error":val['error'],
-                "message":val['message']
-            }), 400
-    return jsonify({
-        "error":val['error'],
-        "message":val['message']
-        }), 500
+        return response.badRequest(val)
+    return response.unProcess(val)
 @app.route("/register",methods=["POST"])
 def user_register():
     """A dummy docstring."""
@@ -94,19 +74,10 @@ def user_register():
     init_service.set(typeService.data_user.value,typeService.data_userregister.value)
     val = init_service.getService(column,param)
     if val['status'] is True and val['error'] is False :
-        return jsonify({
-                "error":val['error'],
-                "data":val['data']
-            }), 200
+        return response.itsOk(val)
     if val['status'] is False and val['error'] is False :
-        return jsonify({
-                "error":val['error'],
-                "message":val['message']
-            }), 400
-    return jsonify({
-        "error":val['error'],
-        "message":val['message']
-        }), 500
+        return response.badRequest(val)
+    return response.unProcess(val)
 @app.route("/create",methods=["GET"])
 def create_user():
     """A dummy docstring."""
@@ -124,10 +95,10 @@ def create_user():
         status = True
         message= "Berhasil Create"
         app.config['INIT_FIRST'] = False
-    return jsonify({
-        "status" : status,
-        "message":f"{message}"
-    }),200
+    d = dict()
+    d['error'] = False
+    d['message'] = "Successfully Create Table"
+    return response.itsOk(d)
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT)
     
