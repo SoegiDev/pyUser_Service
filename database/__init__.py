@@ -1,14 +1,15 @@
+"""module"""
 import uuid
 import datetime
 import os
 import psycopg2
 from psycopg2.extensions import STATUS_BEGIN, STATUS_READY,STATUS_ASYNC,STATUS_SETUP,STATUS_PREPARED,STATUS_SYNC
-class db():
-    HOST = None
-    DATABASE = None
-    USER = None
-    PASSWORD =None
-    PORT = None
+class db:
+    host = None
+    database = None
+    user = None
+    password =None
+    port = None
     conn = None
     cursor = None
     status = None
@@ -17,21 +18,20 @@ class db():
     def __init__(self, app):
         env = app.config.get('ENV_VALUE')
         print(env)
-        self.HOST = app.config.get('HOST')
-        self.DATABASE = app.config.get('DB')
-        self.USER = app.config.get('USER')
-        self.PASSWORD = app.config.get('PWD')
-        self.PORT = app.config.get('PORT')
+        self.host = app.config.get('HOST')
+        self.database = app.config.get('DB')
+        self.user = app.config.get('USER')
+        self.password = app.config.get('PWD')
+        self.port = app.config.get('PORT')
     def ConnectionToDB(self):
         try:
-            conn = psycopg2.connect(host=self.HOST,
-                                    database=self.DATABASE,
-                                    user=self.USER,
-                                    password=self.PASSWORD,
-                                    port = self.PORT)
+            conn = psycopg2.connect(host=self.host,
+                                    database=self.database,
+                                    user=self.user,
+                                    password=self.password,
+                                    port = self.port)
             cursor = conn.cursor()
-            status = 1
-            # print({"Hasil":True,"conn":conn,"cursor":cursor}) 
+            self.status = 1
             if conn.status == STATUS_SETUP:
                 print({"status":STATUS_SETUP,"message":"A connection Setup"})
                 self.status = STATUS_SETUP
@@ -65,11 +65,11 @@ class db():
             self.closed = 1
             self.message = error
             return self.status,self.closed,self.message
-            
     def connect(self):
+        """DocString"""
         return self.conn,self.cursor,self.closed,self.status,self.message
-    
     def closeConnection(self):
         self.conn.close()
         self.closed = self.conn.closed
         return self.conn,self.closed
+        
