@@ -82,8 +82,6 @@ def user_register():
 def create_user():
     """A dummy docstring."""
     init=  app.config.get('INIT_FIRST')
-    status = False
-    message = "Table user sudah ada"
     if init :
         initial = create_first.CreateDatabase()
         initial.createUser()
@@ -92,13 +90,11 @@ def create_user():
         initial.getDataConfig()
         initial.cursorClose()
         initial.connClose()
-        status = True
-        message= "Berhasil Create"
         app.config['INIT_FIRST'] = False
-    d = dict()
-    d['error'] = False
-    d['message'] = "Successfully Create Table"
-    return response.itsOk(d)
+    result ={}
+    result['error'] = False
+    result['message'] = "Successfully Create Table"
+    return response.itsOk(result)
 if __name__ == "__main__":
     app.run(host=HOST, port=PORT)
     
